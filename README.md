@@ -14,3 +14,6 @@ INPUT INTO CONSOLE:PYTHON APP.PY
 NAVIGATE TO: ...
 HTTP://LOCALHOST:5000
 ... IN WEB BROWSER
+
+![see preview](homepage.JPG)
+![see preview](change.JPG)
