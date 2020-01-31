@@ -13,7 +13,7 @@ import pandas as pd
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'thisissecret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inventory_new.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///user.db'
 Bootstrap(app)
 db = SQLAlchemy(app)
 login_manager = LoginManager()
@@ -199,17 +199,17 @@ def login():
         return 'Invalid Username or Password'
     return render_template('login.html', form=form)
 
-# @app.route('/signup', methods=["GET", "POST"])
-# def signup():
-#     form = RegisterForm()
-#     if form.validate_on_submit():
-#         hashed_password = generate_password_hash(form.password.data, method='sha256')
-#         # return '<h1>' + form.username.data + " " + form.password.data + form.email.data + "</h1>"
-#         auser = User(username=form.username.data, email=form.email.data, password=hashed_password)
-#         db.session.add(auser)
-#         db.session.commit()
-#         return 'new user has been created'
-#     return render_template('signup.html', form=form)
+@app.route('/signup', methods=["GET", "POST"])
+def signup():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        hashed_password = generate_password_hash(form.password.data, method='sha256')
+        # return '<h1>' + form.username.data + " " + form.password.data + form.email.data + "</h1>"
+        auser = User(username=form.username.data, email=form.email.data, password=hashed_password)
+        db.session.add(auser)
+        db.session.commit()
+        return 'new user has been created'
+    return render_template('signup.html', form=form)
 
 @app.route('/dashboard', methods=["POST", "GET"])
 @login_required
@@ -272,7 +272,7 @@ def dashboard():
                         removeval = theresults[x].upper()
                         pn = x.split("-")[1]
                         current_upc_list = engine.execute(f"SELECT upclist FROM inventory WHERE mrn = '{pn}';").first()[0]
-                        if current_upc_list = "":
+                        if current_upc_list == "":
                             console_msg = "Nothing to remove"
                             return render_template("dashboard.html", parts=parts, current_term=current_term, results_found=results_found, console_msg=console_msg)
 
