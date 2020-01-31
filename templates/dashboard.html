@@ -1,0 +1,138 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block styles %}
+{{super()}}
+<!-- <link rel="stylesheet" href="{{url_for('.static', filename='dashboard.css')}}"> -->
+<link rel="stylesheet" href="static/styles.css">
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/">Inventory Database</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="">Sign Up</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+      
+      <h2 id="title">Stockroom Inventory</h2>
+      <div id="searcharea">
+        <h3>Search:</h3>
+        <form method="POST">
+          <input type="text" name="searchterm">
+        </form>
+      </div>
+      <div class="search_info">
+        <p id='search_term'>Search Term: {{current_term}}</p>
+        <p id='numresults'>Results Found: {{results_found}}</p>
+        <p id='console_msg'>{{console_msg}}</p>
+      </div>
+      <div class="table_container">
+        <table border="1" id="data_table" class="table">
+          <tr id="header_labels">
+            <th>Material Number</th>
+            <th>UPC List</th>
+            <th>Alternate PN List</th>
+            <th>Location</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Manufacturer</th>
+            <th>Description</th>
+          </tr>
+          
+            {%for i in parts%}
+              <tr>
+                
+                <td>
+                  {{i[0]}}
+                </td> 
+                <td>
+                    <form>
+                      <input type="text" name="upc_edit-{{i[0]}}" id="upc_edit{{i[0]}}"><br>
+                      <input type="checkbox" name="upc_check-{{i[0]}}" id="upc_check{{i[0]}}">check to remove UPC<br>
+                    </form>
+                  {% autoescape false%}
+                  {{i[1]}}
+                  {% endautoescape %}
+                </td>
+                <td>
+                    <form>
+                      <input type="text" name="sdy_edit-{{i[0]}}" id="sdy_edit{{i[0]}}"><br>
+                      <input type="checkbox" name="sdy_check-{{i[0]}}" id="sdy_check{{i[0]}}">check to remove PN<br>
+                    </form>
+                  {% autoescape false%}
+                  {{i[2]}}
+                  {% endautoescape %}
+                </td>
+                <td>
+                  <form>
+                    <input type="text" name="loc-{{i[0]}}" id="loc-{{i[0]}}"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[3]}}
+                  {% endautoescape %}
+                </td>
+                <!-- <td>
+                  <form>
+                    <input type="text" name="qty-{{i[0]}}" id="qtyedit"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[4]}}
+                  {% endautoescape %}
+                </td> -->
+                  <td>
+                  <form>
+                    <input type="text" name="min-{{i[0]}}" id="minedit"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[4]}}
+                  {% endautoescape %}
+                </td>
+                <td>
+                  <form>
+                    <input type="text" name="max-{{i[0]}}" id="maxedit"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[5]}}
+                  {% endautoescape %}
+                </td>
+                <td>
+                  <form>
+                    <input type="text" name="mfg-{{i[0]}}" id="mfg-{{i[0]}}"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[6]}}
+                  {% endautoescape %}
+                </td>
+                <td>
+                  <form>
+                    <input type="text" name="desc-{{i[0]}}" id="desc-{{i[0]}}"><br>
+                  </form>
+                  {% autoescape false%}
+                  {{i[7]}}
+                  {% endautoescape %}
+                </td>
+              </tr>
+    
+            {%endfor%}
+        </table>
+      </div>
+
+{% endblock %}
